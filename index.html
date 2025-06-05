@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+=<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -77,10 +77,19 @@
 </head>
 <body>
   <div class="container">
-    <span class="hug-emoji">💌</span>
+    <span class="hug-emoji">🤗</span>
     <h1>Welcome to Hugbox</h1>
-    <p>Your cozy corner on the web : a safe space for hugs, notes, and new friends <3</p>
-    <button>Start Your Cozy Journey</button>
+    <p>Your cozy corner to relax, share, and connect.</p>
+
+    <button id="startJourneyBtn">Start Your Cozy Journey</button>
   </div>
+
+  <script>
+    const btn = document.getElementById('startJourneyBtn');
+    btn.addEventListener('click', () => {
+      // Navigate to avatar setup page
+      window.location.href = 'avatar.html';
+    });
+  </script>
 </body>
 </html>

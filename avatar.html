@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hugbox - Set Up Your Profile</title>
+
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      background-color: #FDEEF9; /* Soft pastel pink */
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: #4B4B4B;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: #fff0f7; /* very light pink */
+      border-radius: 25px;
+      padding: 40px 60px;
+      max-width: 400px;
+      box-shadow: 0 8px 20px rgba(255, 192, 203, 0.4);
+      user-select: none;
+    }
+
+    h1 {
+      font-weight: 600;
+      font-size: 2.8rem;
+      margin-bottom: 1em;
+      color: #d06caa;
+      user-select: text;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    /* Wrapper for avatar and upload button to center both */
+    .avatar-upload-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    .avatar-preview {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background-color: #fce7f3;
+      box-shadow: 0 4px 15px rgba(208, 108, 170, 0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-size: 4rem;
+      color: #d06caa;
+      user-select: none;
+      cursor: pointer;
+      position: relative;
+      transition: box-shadow 0.3s ease;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 0 auto;
+    }
+
+    .avatar-preview:hover {
+      box-shadow: 0 6px 20px rgba(208, 108, 170, 0.7);
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    label.upload-btn {
+      background-color: #f9c1d1;
+      color: #741a47;
+      padding: 10px 30px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      display: inline-block;
+      user-select: none;
+      white-space: nowrap;
+      max-width: fit-content;
+      margin: 0 auto;
+    }
+
+    label.upload-btn:hover {
+      background-color: #d66a8e;
+      color: #fff;
+    }
+
+    label {
+      font-weight: 600;
+      color: #741a47;
+      align-self: flex-start;
+      margin-left: 8px;
+      width: 100%;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 25px;
+      border: 1.5px solid #d06caa;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      outline-offset: 3px;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+      border-color: #a3548e;
+    }
+
+    .optional {
+      font-weight: 400;
+      font-size: 0.85rem;
+      color: #a97ba0;
+      margin-left: 6px;
+      font-style: italic;
+    }
+
+    button {
+      background-color: #c7f9d9; /* Soft Mint Green */
+      border: none;
+      padding: 18px 40px;
+      font-size: 1.2rem;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background-color 0.3s ease;
+      box-shadow: 0 6px 15px rgba(194, 249, 217, 0.5);
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      user-select: none;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    button:hover:enabled {
+      transform: scale(1.07);
+      background-color: #a3eab0;
+      box-shadow: 0 8px 20px rgba(163, 234, 176, 0.7);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Set Up Your Profile</h1>
+
+    <form id="profileForm" novalidate>
+      <div class="avatar-upload-wrapper">
+        <div class="avatar-preview" id="avatarPreview" title="Click to change avatar">👤</div>
+        <label for="avatarUpload" class="upload-btn">Upload / Edit Profile Image</label>
+        <input type="file" id="avatarUpload" accept="image/*" />
+      </div>
+
+      <label for="nickname">Nickname <span style="color:#e03c8a">*</span></label>
+      <input type="text" id="nickname" name="nickname" placeholder="Enter your nickname" required autocomplete="off" />
+
+      <label for="age">Age <span class="optional">(optional)</span></label>
+      <input type="number" id="age" name="age" min="1" max="120" placeholder="Enter your age" />
+
+      <label for="pronouns">Pronouns <span style="color:#e03c8a">*</span></label>
+      <input type="text" id="pronouns" name="pronouns" placeholder="e.g. she/her, they/them" required autocomplete="off" />
+
+      <button type="submit" id="startBtn" disabled>Start Your Cozy Journey</button>
+    </form>
+  </div>
+
+  <script>
+    const avatarPreview = document.getElementById('avatarPreview');
+    const avatarUpload = document.getElementById('avatarUpload');
+    const nicknameInput = document.getElementById('nickname');
+    const pronounsInput = document.getElementById('pronouns');
+    const ageInput = document.getElementById('age');
+    const startBtn = document.getElementById('startBtn');
+    const form = document.getElementById('profileForm');
+
+    // Clicking avatar preview triggers file input
+    avatarPreview.addEventListener('click', () => {
+      avatarUpload.click();
+    });
+
+    // Update avatar preview on image upload
+    avatarUpload.addEventListener('change', () => {
+      const file = avatarUpload.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          avatarPreview.style.backgroundImage = `url('${e.target.result}')`;
+          avatarPreview.textContent = '';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Check if required fields are filled to enable button
+    function checkFormValidity() {
+      const nicknameValid = nicknameInput.value.trim().length > 0;
+      const pronounsValid = pronounsInput.value.trim().length > 0;
+
+      if (nicknameValid && pronounsValid) {
+        startBtn.disabled = false;
+      } else {
+        startBtn.disabled = true;
+      }
+    }
+
+    // Validate inputs on typing
+    nicknameInput.addEventListener('input', checkFormValidity);
+    pronounsInput.addEventListener('input', checkFormValidity);
+
+    // Optional: Submit handler
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+
+      if (startBtn.disabled) return;
+
+      const profileData = {
+        nickname: nicknameInput.value.trim(),
+        age: ageInput.value ? Number(ageInput.value) : null,
+        pronouns: pronounsInput.value.trim(),
+        avatar: avatarPreview.style.backgroundImage || null,
+      };
+
+      alert(`Welcome, ${profileData.nickname}! Your profile is set.`);
+      // Redirect or store data here as needed
+    });
+  </script>
+</body>
+</html>
