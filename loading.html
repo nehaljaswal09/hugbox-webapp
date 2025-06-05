@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hugbox - Loading</title>
+
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #F3E8FF; /* Soft lavender */
+      font-family: 'Poppins', sans-serif;
+      color: #6b4b62;
+      user-select: none;
+      overflow: hidden;
+    }
+
+    .loader-container {
+      width: 200px;
+      height: 8px;
+      background: #d8b6ff33; /* very transparent lavender */
+      border-radius: 30px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 10px #b892ff44;
+    }
+
+    .loader-bar {
+      height: 100%;
+      width: 40%;
+      background: #a077ff;
+      border-radius: 30px;
+      position: absolute;
+      animation: scroll 1.8s linear infinite;
+      box-shadow: 0 0 8px #a077ffaa;
+    }
+
+    @keyframes scroll {
+      0% {
+        left: -40%;
+      }
+      100% {
+        left: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="loader-container" aria-label="Loading content">
+    <div class="loader-bar"></div>
+  </div>
+
+  <script>
+    // After 2.5 seconds, redirect to welcome.html
+    setTimeout(() => {
+      window.location.href = 'welcome.html';
+    }, 2500);
+  </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -46,7 +46,6 @@
       gap: 18px;
     }
 
-    /* Wrapper for avatar and upload button to center both */
     .avatar-upload-wrapper {
       display: flex;
       flex-direction: column;
@@ -76,6 +75,7 @@
       background-position: center;
       background-repeat: no-repeat;
       margin: 0 auto;
+      text-transform: uppercase;
     }
 
     .avatar-preview:hover {
@@ -115,7 +115,8 @@
     }
 
     input[type="text"],
-    input[type="number"] {
+    input[type="number"],
+    select {
       width: 100%;
       padding: 12px 16px;
       border-radius: 25px;
@@ -124,9 +125,11 @@
       font-family: 'Poppins', sans-serif;
       outline-offset: 3px;
       transition: border-color 0.3s ease;
+      text-transform: none;
     }
     input[type="text"]:focus,
-    input[type="number"]:focus {
+    input[type="number"]:focus,
+    select:focus {
       border-color: #a3548e;
     }
 
@@ -184,7 +187,14 @@
       <input type="number" id="age" name="age" min="1" max="120" placeholder="Enter your age" />
 
       <label for="pronouns">Pronouns <span style="color:#e03c8a">*</span></label>
-      <input type="text" id="pronouns" name="pronouns" placeholder="e.g. she/her, they/them" required autocomplete="off" />
+      <select id="pronouns" name="pronouns" required>
+        <option value="" disabled selected>Select your pronouns</option>
+        <option value="she/her">she/her</option>
+        <option value="he/him">he/him</option>
+        <option value="they/them">they/them</option>
+        <option value="prefer not to say">prefer not to say</option>
+        <option value="other">other</option>
+      </select>
 
       <button type="submit" id="startBtn" disabled>Start Your Cozy Journey</button>
     </form>
@@ -198,6 +208,20 @@
     const ageInput = document.getElementById('age');
     const startBtn = document.getElementById('startBtn');
     const form = document.getElementById('profileForm');
+
+    // Function to set initials in avatar preview if no image
+    function setInitials() {
+      const nick = nicknameInput.value.trim();
+      if (!avatarPreview.style.backgroundImage || avatarPreview.style.backgroundImage === 'none') {
+        if (nick.length === 0) {
+          avatarPreview.textContent = '👤';
+        } else {
+          let initials = nick.split(' ').map(n => n[0]).join('').toUpperCase();
+          if (initials.length > 2) initials = initials.slice(0,2);
+          avatarPreview.textContent = initials;
+        }
+      }
+    }
 
     // Clicking avatar preview triggers file input
     avatarPreview.addEventListener('click', () => {
@@ -227,27 +251,43 @@
       } else {
         startBtn.disabled = true;
       }
+
+      setInitials();
     }
 
-    // Validate inputs on typing
+    // Validate inputs on typing/select change
     nicknameInput.addEventListener('input', checkFormValidity);
-    pronounsInput.addEventListener('input', checkFormValidity);
+    pronounsInput.addEventListener('change', checkFormValidity);
 
-    // Optional: Submit handler
+    // Initialize initials on page load if nickname has value
+    window.addEventListener('load', setInitials);
+
+    // Submit handler: save data and redirect
     form.addEventListener('submit', e => {
       e.preventDefault();
 
       if (startBtn.disabled) return;
 
+      // Save avatar image as base64 string (if any)
+      let avatarData = null;
+      if (avatarPreview.style.backgroundImage && avatarPreview.style.backgroundImage !== 'none') {
+        // backgroundImage is like url("data:image/png;base64,....")
+        avatarData = avatarPreview.style.backgroundImage.slice(5, -2);
+      }
+
       const profileData = {
         nickname: nicknameInput.value.trim(),
         age: ageInput.value ? Number(ageInput.value) : null,
         pronouns: pronounsInput.value.trim(),
-        avatar: avatarPreview.style.backgroundImage || null,
+        avatar: avatarData,
       };
+      localStorage.setItem('hugboxProfile', JSON.stringify(profileData));
 
-      alert(`Welcome, ${profileData.nickname}! Your profile is set.`);
-      // Redirect or store data here as needed
+      // Clear any flag that disables welcome screen, so it shows on next page
+      localStorage.removeItem('firstTimeWelcomeDone');
+
+      // Redirect to dashboard or loading screen
+      window.location.href = 'dashboard.html'; // or 'loading.html' or your next page
     });
   </script>
 </body>

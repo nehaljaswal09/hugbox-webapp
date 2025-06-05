@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hugbox Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #fdeef9;
+      color: #4B4B4B;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background-color: #fff0f7;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 4px 0 20px rgba(255, 192, 203, 0.3);
+      transition: all 0.3s ease;
+      z-index: 1;
+    }
+
+    .sidebar h2 {
+      font-size: 1.6rem;
+      color: #d06caa;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      color: #4B4B4B;
+      background: #c7f9d9;
+      padding: 14px 20px;
+      border-radius: 30px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(199, 249, 217, 0.4);
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar a:hover {
+      background-color: #a3eab0;
+      transform: scale(1.06);
+      box-shadow: 0 8px 20px rgba(163, 234, 176, 0.6);
+    }
+
+    /* Main Content */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 30px 40px;
+      position: relative;
+      z-index: 1;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .top-bar h1 {
+      font-size: 2.2rem;
+      color: #d06caa;
+    }
+
+    /* Profile dropdown */
+    .profile-menu {
+      position: relative;
+    }
+
+    /* Changed from img to div */
+    .profile-pic {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #f9c6d3;
+      font-weight: 700;
+      font-size: 20px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: background-color 0.3s ease;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 60px;
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      z-index: 10;
+      min-width: 150px;
+    }
+
+    .dropdown a {
+      display: block;
+      padding: 12px 20px;
+      text-decoration: none;
+      color: #4B4B4B;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .dropdown a:hover {
+      background-color: #fce7f3;
+    }
+
+    /* Optional main content placeholder */
+    .content {
+      margin-top: 40px;
+      font-size: 1.2rem;
+      color: #6b4b62;
+    }
+
+    /* === Welcome Screen Overlay === */
+    #welcomeScreen {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border-radius: 20px;
+      width: 90vw;
+      max-width: 450px;
+      height: 320px;
+      box-shadow: 0 10px 40px rgba(208, 108, 170, 0.7);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: all 1s ease;
+      padding: 40px 30px;
+      user-select: none;
+    }
+
+    #welcomeScreen.minimized {
+      width: 150px;
+      height: 50px;
+      border-radius: 30px;
+      padding: 10px 20px;
+      box-shadow: 0 4px 12px rgba(208, 108, 170, 0.5);
+      top: 20px;
+      left: 20px;
+      transform: translate(0, 0);
+      font-size: 1rem;
+      overflow: hidden;
+    }
+
+    #welcomeScreen h1 {
+      font-size: 2.8rem;
+      color: #d06caa;
+      margin-bottom: 10px;
+    }
+
+    #welcomeScreen p {
+      font-size: 1.1rem;
+      color: #741a47;
+      margin-bottom: 25px;
+      user-select: text;
+    }
+
+    /* Confetti canvas */
+    #confettiCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 10000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>☁️ Hugbox</h2>
+    <a href="#">📓 Journal</a>
+    <a href="#">🧸 Friends</a>
+    <!-- Add more buttons as you build more features -->
+  </div>
+
+  <!-- Main -->
+  <div class="main" id="mainDashboard">
+    <div class="top-bar">
+      <h1>Hello, <span id="nicknameDisplay">Friend</span>!</h1>
+      <div class="profile-menu">
+        <!-- Changed to div -->
+        <div class="profile-pic" id="profilePic" title="Profile"></div>
+        <div class="dropdown" id="dropdownMenu">
+          <a href="#">👤 Profile</a>
+          <a href="#">⚙️ Settings</a>
+          <a href="#" id="logout">🚪 Logout</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <p>Welcome to your cozy corner. Pick a feature from the left and begin!</p>
+    </div>
+  </div>
+
+  <!-- Welcome Screen Overlay -->
+  <div id="welcomeScreen" style="display:none;">
+    <h1>Welcome, <span id="welcomeNickname"></span>!</h1>
+    <p>We’re so glad you’re here 💖</p>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    // Get profile from localStorage
+    const profile = JSON.parse(localStorage.getItem('hugboxProfile'));
+    const nickname = profile?.nickname || 'Friend';
+    const pronouns = profile?.pronouns || '';
+    const avatarBg = profile?.avatar || null;
+
+    // Update nickname display on dashboard
+    document.getElementById('nicknameDisplay').textContent = nickname;
+
+    // Update profile pic div
+    const profilePic = document.getElementById('profilePic');
+
+    function getInitials(name) {
+      if (!name) return '';
+      const parts = name.trim().split(' ');
+      if (parts.length === 1) return parts[0][0].toUpperCase();
+      else return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+
+    if (avatarBg) {
+      if (avatarBg.startsWith('data:image') || avatarBg.startsWith('http')) {
+        // It's an image URL/base64, set as background image and clear text
+        profilePic.style.backgroundImage = `url('${avatarBg}')`;
+        profilePic.textContent = '';
+        profilePic.style.backgroundColor = 'transparent';
+      } else {
+        // Treat avatar as a color string, show initials on that color
+        const initials = getInitials(nickname);
+        profilePic.style.backgroundImage = 'none';
+        profilePic.style.backgroundColor = avatarBg;
+        profilePic.textContent = initials;
+      }
+    } else {
+      // No avatar data: default color and initial F
+      profilePic.style.backgroundImage = 'none';
+      profilePic.style.backgroundColor = '#d06caa';
+      profilePic.textContent = 'F';
+    }
+
+    // Dropdown toggle
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    profilePic.addEventListener('click', () => {
+      dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Logout clears and returns to home
+    document.getElementById('logout').addEventListener('click', () => {
+      localStorage.clear();
+      window.location.href = 'index.html';
+    });
+
+    // Close dropdown when clicking outside
+    window.addEventListener('click', function (e) {
+      if (!profilePic.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        dropdownMenu.style.display = "none";
+      }
+    });
+
+    // --- Welcome Screen Logic ---
+
+    const welcomeScreen = document.getElementById('welcomeScreen');
+    const welcomeNickname = document.getElementById('welcomeNickname');
+    const mainDashboard = document.getElementById('mainDashboard');
+    const confettiCanvas = document.getElementById('confettiCanvas');
+
+    // Show welcome only if first time after setup
+    if (!localStorage.getItem('firstTimeWelcomeDone')) {
+      // Set welcome text
+      welcomeNickname.textContent = nickname;
+
+      // Show welcome screen and hide main dashboard initially
+      welcomeScreen.style.display = 'flex';
+      mainDashboard.style.opacity = 0;
+
+      // Setup confetti
+      const myConfetti = confetti.create(confettiCanvas, {
+        resize: true,
+        useWorker: true
+      });
+
+      // Fire confetti bursts every 400ms for 4 seconds (~10 bursts)
+      let confettiInterval = setInterval(() => {
+        myConfetti({
+          particleCount: 40,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }, 400);
+
+      // After 4 seconds, stop confetti and animate welcome screen minimizing
+      setTimeout(() => {
+        clearInterval(confettiInterval);
+
+        // Animate minimize
+        welcomeScreen.classList.add('minimized');
+
+        // After animation (1s), hide welcome screen and show dashboard
+        setTimeout(() => {
+          welcomeScreen.style.display = 'none';
+          mainDashboard.style.opacity = 1;
+
+          // Mark welcome done
+          localStorage.setItem('firstTimeWelcomeDone', 'true');
+        }, 1100);
+      }, 4000);
+
+    } else {
+      // No welcome needed, show dashboard directly
+      welcomeScreen.style.display = 'none';
+      mainDashboard.style.opacity = 1;
+    }
+  </script>
+
+</body>
+</html>

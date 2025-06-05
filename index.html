@@ -22,6 +22,11 @@
       padding: 20px;
     }
 
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .container {
       background: #fff0f7; /* very light pink */
       border-radius: 25px;
@@ -29,6 +34,7 @@
       max-width: 400px;
       box-shadow: 0 8px 20px rgba(255, 192, 203, 0.4);
       user-select: none;
+      animation: fadeIn 0.8s ease forwards;
     }
 
     h1 {
@@ -81,7 +87,8 @@
     <h1>Welcome to Hugbox</h1>
     <p>Your cozy corner to relax, share, and connect.</p>
 
-    <button id="startJourneyBtn">Start Your Cozy Journey</button>
+    <!-- Button leads to avatar setup page -->
+    <button id="startJourneyBtn">Start Your Cozy Journey ✨</button>
   </div>
 
   <script>
